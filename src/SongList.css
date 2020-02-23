@@ -1,0 +1,13 @@
+.SongList {
+  padding-top: 1.5rem;
+}
+
+.song:hover {
+  background: #999;
+  cursor: pointer;
+  color: #fff;
+}
+.song.playing {
+  background: brown;
+  color: #fff;
+}

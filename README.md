@@ -1,3 +1,13 @@
+# Tehvoid Music Player 2
+
+---
+
+This project will eventually replace the current music player [here](https://tehvoid.net/music-player/)
+
+### TODO:
+
+- everything!
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
