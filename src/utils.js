@@ -78,4 +78,5 @@ export function prev(state, dispatch) {
     const nextSong = getNextPossibleRandomSong(songs, played, currentSong);
     dispatch({ type: "SET_CURRENT_SONG", payload: nextSong });
   }
+  scrollToCurrentSong();
 }
