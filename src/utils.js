@@ -1,5 +1,18 @@
 import animateScrollTo from "animated-scroll-to";
 
+export function formatTimecode(seconds) {
+  seconds = Math.floor(seconds);
+  let minutes = Math.floor(seconds / 60);
+  seconds = seconds - minutes * 60;
+  minutes = "" + minutes;
+  seconds = "" + seconds;
+
+  if (minutes.length === 1) minutes = "0" + minutes;
+  if (seconds.length === 1) seconds = "0" + seconds;
+
+  return minutes + ":" + seconds;
+}
+
 function getNextPossibleRandomSong(songs, played, currentSong) {
   let possibleSongs = [];
   if (played.length >= songs.length) {

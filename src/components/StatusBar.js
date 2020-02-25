@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { useStore } from "../store-provider";
-import { next, prev } from "../utils";
+import { next, prev, formatTimecode } from "../utils";
 
 function playPause(state, dispatch) {
   const { playing } = state.status;
@@ -25,6 +25,9 @@ function StatusBar(props) {
   const { artist, album, title } = state.currentSong;
   const { playbackPosition, duration } = state;
 
+  const humanReadablePlaybackPosition = formatTimecode(playbackPosition);
+  const humanReadableDuration = formatTimecode(duration);
+
   useEffect(() => {
     document.title = `${
       playing ? `${artist} - ${title}` : "Tehvoid Music Player"
@@ -42,7 +45,8 @@ function StatusBar(props) {
         {shuffle ? "sequential playback" : "shuffle playback"}
       </button>
       <span className="songMeta">
-        {artist} - {title} {playbackPosition} / {duration}
+        {artist} - {title} {humanReadablePlaybackPosition} /{" "}
+        {humanReadableDuration}
       </span>
     </div>
   );
