@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { useStore } from "../store-provider";
 import { next, prev } from "../utils";
@@ -24,6 +24,12 @@ function StatusBar(props) {
   const { playing, shuffle } = state.status;
   const { artist, album, title } = state.currentSong;
   const { playbackPosition, duration } = state;
+
+  useEffect(() => {
+    document.title = `${
+      playing ? `${artist} - ${title}` : "Tehvoid Music Player"
+    }`;
+  });
 
   return (
     <div className="StatusBar">
