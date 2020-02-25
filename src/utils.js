@@ -32,7 +32,7 @@ export function scrollToCurrentSong() {
 
 export function next(state, dispatch) {
   const { songs, currentSong } = state;
-  const { shuffle } = state.status;
+  const { shuffle, playing } = state.status;
   const { pos: queuePos, played, unplayed } = state.queue;
   // Always add the previously played song to played
   if (currentSong.location !== null) {
@@ -55,13 +55,19 @@ export function next(state, dispatch) {
     const nextSong = songs[nextSongIndex];
     dispatch({ type: "SET_CURRENT_SONG", payload: nextSong });
   }
+  if (!playing) {
+    dispatch({
+      type: "SET_STATUS",
+      payload: { ...state.status, playing: true }
+    });
+  }
   scrollToCurrentSong();
 }
 
 export function prev(state, dispatch) {
   const { pos: queuePos, played } = state.queue;
   const { songs, currentSong } = state;
-  const { shuffle } = state.status;
+  const { shuffle, playing } = state.status;
   if (queuePos > 0 && played.length > 0) {
     const prevSong = played[queuePos - 1];
     const newPlayed = played.slice(0, queuePos - 1);
@@ -77,6 +83,12 @@ export function prev(state, dispatch) {
   } else {
     const nextSong = getNextPossibleRandomSong(songs, played, currentSong);
     dispatch({ type: "SET_CURRENT_SONG", payload: nextSong });
+  }
+  if (!playing) {
+    dispatch({
+      type: "SET_STATUS",
+      payload: { ...state.status, playing: true }
+    });
   }
   scrollToCurrentSong();
 }
