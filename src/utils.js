@@ -26,11 +26,12 @@ function getNextPossibleRandomSong(songs, played, currentSong) {
     possibleSongs[Math.floor(Math.random() * possibleSongs.length)];
   return nextSong;
 }
-export function scrollToCurrentSong() {
+export function scrollToCurrentSong(dispatch) {
   setTimeout(() => {
     const element = document.querySelector(".song.playing");
     const verticalOffset = -document.querySelector(".StatusBar").offsetHeight;
-    if (element !== null)
+    if (element !== null) {
+      dispatch({ type: "SET_RUNNING_ANIMATION", payload: true });
       animateScrollTo(element, {
         verticalOffset,
         minDuration: 1000,
@@ -39,7 +40,10 @@ export function scrollToCurrentSong() {
             ? 4 * t * t * t
             : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
         }
-      });
+      }).then(() =>
+        dispatch({ type: "SET_RUNNING_ANIMATION", payload: false })
+      );
+    }
   }, 200);
 }
 
@@ -74,7 +78,7 @@ export function next(state, dispatch) {
       payload: { ...state.status, playing: true }
     });
   }
-  scrollToCurrentSong();
+  scrollToCurrentSong(dispatch);
 }
 
 export function prev(state, dispatch) {
@@ -103,5 +107,5 @@ export function prev(state, dispatch) {
       payload: { ...state.status, playing: true }
     });
   }
-  scrollToCurrentSong();
+  scrollToCurrentSong(dispatch);
 }

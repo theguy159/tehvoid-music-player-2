@@ -8,11 +8,13 @@ class Player extends Component {
     this.player = React.createRef();
   }
   onTimeUpdate() {
-    const { dispatch } = this.props;
-    dispatch({
-      type: "SET_PLAYBACK_POSITION",
-      payload: this.player.current.currentTime
-    });
+    const { state, dispatch } = this.props;
+    const { runningAnimation } = state;
+    if (!runningAnimation)
+      dispatch({
+        type: "SET_PLAYBACK_POSITION",
+        payload: this.player.current.currentTime
+      });
   }
   onDurationChange() {
     const { dispatch } = this.props;

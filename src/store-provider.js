@@ -19,7 +19,8 @@ const defaultState = {
     playing: false,
     shuffle: true,
     repeat: false
-  }
+  },
+  runningAnimation: false
 };
 
 function reducer(state = defaultState, action = {}) {
@@ -56,6 +57,8 @@ function reducer(state = defaultState, action = {}) {
       return { ...state, queue: { ...state.queue, unplayed: action.payload } };
     case "SET_QUEUE_POS":
       return { ...state, queue: { ...state.queue, pos: action.payload } };
+    case "SET_RUNNING_ANIMATION":
+      return { ...state, runningAnimation: action.payload };
     default:
       return state;
   }
