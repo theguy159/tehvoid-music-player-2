@@ -1,0 +1,11 @@
+.SongItem {
+  display: flex;
+  padding: 0.2rem;
+  .meta {
+    flex: 1;
+  }
+  .albumArt {
+    width: auto;
+    height: 100%;
+  }
+}

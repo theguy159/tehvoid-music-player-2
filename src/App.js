@@ -8,6 +8,7 @@ import Player from "./components/Player";
 import "./App.css";
 import "./StatusBar.css";
 import "./SongList.css";
+import "./SongItem.scss";
 
 function App() {
   return (

@@ -2,6 +2,8 @@ import React from "react";
 import { useStore } from "../store-provider";
 import { scrollToCurrentSong } from "../utils";
 
+import SongItem from "./SongItem";
+
 function handleClick(dispatch, state, song) {
   const { currentSong } = state;
   const { pos: queuePos } = state.queue;
@@ -16,7 +18,7 @@ function handleClick(dispatch, state, song) {
       type: "SET_STATUS",
       payload: { ...state.status, playing: true }
     });
-  scrollToCurrentSong();
+  scrollToCurrentSong(dispatch);
 }
 
 function SongList(props) {
@@ -25,15 +27,23 @@ function SongList(props) {
   return (
     <div className="SongList">
       {songs.map((song, index) => (
-        <div
+        // <div
+        // className={`song ${
+        //   currentSong.trackIndex === song.trackIndex ? "playing" : ""
+        // }`}
+        //   key={`song_${index}`}
+        //   onClick={() => handleClick(dispatch, state, song)}
+        // >
+        //   {song.artist} - {song.title}
+        // </div>
+        <SongItem
+          artist={song.artist}
+          title={song.title}
+          onClick={() => handleClick(dispatch, state, song)}
           className={`song ${
             currentSong.trackIndex === song.trackIndex ? "playing" : ""
           }`}
-          key={`song_${index}`}
-          onClick={() => handleClick(dispatch, state, song)}
-        >
-          {song.artist} - {song.title}
-        </div>
+        />
       ))}
     </div>
   );
