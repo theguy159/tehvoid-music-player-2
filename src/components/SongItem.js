@@ -9,8 +9,6 @@ function SongItem({
   album,
   albumArtSrc,
   length,
-  source,
-  sourceType,
   className,
   onClick
 }) {
@@ -32,8 +30,6 @@ SongItem.propTypes = {
   album: PropTypes.string,
   albumArtSrc: PropTypes.string,
   length: PropTypes.number,
-  source: PropTypes.string.isRequired,
-  sourceType: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   className: PropTypes.string
 };

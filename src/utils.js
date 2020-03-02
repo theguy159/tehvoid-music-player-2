@@ -109,3 +109,18 @@ export function prev(state, dispatch) {
   }
   scrollToCurrentSong(dispatch);
 }
+
+export function playPause(state, dispatch) {
+  dispatch({
+    type: "SET_STATUS",
+    payload: { ...state.status, playing: !state.status.playing }
+  });
+}
+
+export function toggleShuffle(state, dispatch) {
+  const { shuffle } = state.status;
+  dispatch({
+    type: "SET_STATUS",
+    payload: { ...state.status, shuffle: !shuffle }
+  });
+}

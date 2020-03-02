@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { useStore } from "../store-provider";
-import { next, prev, formatTimecode } from "../utils";
+import { next, prev, formatTimecode, toggleShuffle } from "../utils";
 
 function playPause(state, dispatch) {
   const { playing } = state.status;
@@ -10,19 +10,11 @@ function playPause(state, dispatch) {
     payload: { ...state.status, playing: !playing }
   });
 }
-function toggleShuffle(state, dispatch) {
-  const { shuffle } = state.status;
-  dispatch({
-    type: "SET_STATUS",
-    payload: { ...state.status, shuffle: !shuffle }
-  });
-}
-function fav(state, dispatch) {}
 
 function StatusBar(props) {
   const { state, dispatch } = useStore();
   const { playing, shuffle } = state.status;
-  const { artist, album, title } = state.currentSong;
+  const { artist, title } = state.currentSong;
   const { playbackPosition, duration } = state;
 
   const humanReadablePlaybackPosition = formatTimecode(playbackPosition);

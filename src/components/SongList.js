@@ -1,14 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useStore } from "../store-provider";
 import { scrollToCurrentSong } from "../utils";
 
 import SongItem from "./SongItem";
 
 function handleClick(dispatch, state, song) {
-  const { currentSong } = state;
-  const { pos: queuePos } = state.queue;
   const { playing } = state.status;
-  // dispatch({ type: "ADD_PLAYED_SONG", payload: currentSong });
   dispatch({ type: "SET_PLAYED_SONGS", payload: [] });
   dispatch({ type: "SET_QUEUE_POS", payload: 0 });
   dispatch({ type: "SET_CURRENT_SONG", payload: song });
@@ -24,19 +21,22 @@ function handleClick(dispatch, state, song) {
 function SongList(props) {
   const { state, dispatch } = useStore();
   const { songs, currentSong } = state;
+
+  // We don't want the page scrolling when pressing space
+  useEffect(() => {
+    const eventListener = document.addEventListener("keydown", e => {
+      if (e.keyCode === 32) e.preventDefault();
+    });
+    return () => {
+      document.removeEventListener("keydown", eventListener);
+    };
+  });
+
   return (
     <div className="SongList">
       {songs.map((song, index) => (
-        // <div
-        // className={`song ${
-        //   currentSong.trackIndex === song.trackIndex ? "playing" : ""
-        // }`}
-        //   key={`song_${index}`}
-        //   onClick={() => handleClick(dispatch, state, song)}
-        // >
-        //   {song.artist} - {song.title}
-        // </div>
         <SongItem
+          key={`song_${index}`}
           artist={song.artist}
           title={song.title}
           onClick={() => handleClick(dispatch, state, song)}
