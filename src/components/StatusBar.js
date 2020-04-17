@@ -21,7 +21,8 @@ function playPause(state, dispatch) {
   });
 }
 
-function handleScrubStart(setIsScrubbing) {
+function handleScrubStart(pos, setIsScrubbing, setScrubPosition) {
+  setScrubPosition(pos);
   setIsScrubbing(true);
 }
 
@@ -89,7 +90,9 @@ function StatusBar(props) {
           min={0}
           max={100}
           value={playbackPercent}
-          onScrubStart={() => handleScrubStart(setIsScrubbing)}
+          onScrubStart={(pos) =>
+            handleScrubStart(pos, setIsScrubbing, setScrubPosition)
+          }
           onScrubChange={(pos) => handleScrubChange(pos, setScrubPosition)}
           onScrubEnd={(pos) =>
             handleScrubEnd(pos, duration, setIsScrubbing, state, dispatch)
