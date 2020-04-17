@@ -13,7 +13,7 @@ function handleClick(dispatch, state, song) {
   if (!playing)
     dispatch({
       type: "SET_STATUS",
-      payload: { ...state.status, playing: true }
+      payload: { ...state.status, playing: true },
     });
   scrollToCurrentSong(dispatch);
 }
@@ -25,7 +25,7 @@ function SongList(props) {
 
   // We don't want the page scrolling when pressing space
   useEffect(() => {
-    const eventListener = document.addEventListener("keydown", e => {
+    const eventListener = document.addEventListener("keydown", (e) => {
       if (e.keyCode === 32) e.preventDefault();
     });
     return () => {

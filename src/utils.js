@@ -19,7 +19,7 @@ function getNextPossibleRandomSong(songs, played, currentSong) {
     possibleSongs = [...songs];
   } else {
     possibleSongs = songs.filter(
-      song => !played.includes(song) && song !== currentSong
+      (song) => !played.includes(song) && song !== currentSong
     );
   }
   const nextSong =
@@ -34,12 +34,12 @@ export function scrollToCurrentSong(dispatch) {
       animateScrollTo(element, {
         verticalOffset,
         minDuration: 1000,
-        easing: t => {
+        easing: (t) => {
           return t < 0.5
             ? 4 * t * t * t
             : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-        }
-      })
+        },
+      });
     }
   }, 200);
 }
@@ -72,7 +72,7 @@ export function next(state, dispatch) {
   if (!playing) {
     dispatch({
       type: "SET_STATUS",
-      payload: { ...state.status, playing: true }
+      payload: { ...state.status, playing: true },
     });
   }
   scrollToCurrentSong(dispatch);
@@ -101,7 +101,7 @@ export function prev(state, dispatch) {
   if (!playing) {
     dispatch({
       type: "SET_STATUS",
-      payload: { ...state.status, playing: true }
+      payload: { ...state.status, playing: true },
     });
   }
   scrollToCurrentSong(dispatch);
@@ -110,7 +110,7 @@ export function prev(state, dispatch) {
 export function playPause(state, dispatch) {
   dispatch({
     type: "SET_STATUS",
-    payload: { ...state.status, playing: !state.status.playing }
+    payload: { ...state.status, playing: !state.status.playing },
   });
 }
 
@@ -118,7 +118,7 @@ export function toggleShuffle(state, dispatch) {
   const { shuffle } = state.status;
   dispatch({
     type: "SET_STATUS",
-    payload: { ...state.status, shuffle: !shuffle }
+    payload: { ...state.status, shuffle: !shuffle },
   });
 }
 
@@ -126,6 +126,13 @@ export function toggleCompact(state, dispatch) {
   const { compact } = state.status;
   dispatch({
     type: "SET_STATUS",
-    payload: { ...state.status, compact: !compact }
+    payload: { ...state.status, compact: !compact },
+  });
+}
+
+export function setPositionScrubbedTo(state, dispatch, positionScrubbedTo) {
+  dispatch({
+    type: "SET_POSITION_SCRUBBED_TO",
+    payload: positionScrubbedTo,
   });
 }

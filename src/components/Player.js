@@ -13,7 +13,7 @@ class Player extends Component {
     if (!runningAnimation)
       dispatch({
         type: "SET_PLAYBACK_POSITION",
-        payload: this.player.current.currentTime
+        payload: this.player.current.currentTime,
       });
   }
   onDurationChange() {
@@ -21,7 +21,7 @@ class Player extends Component {
     const duration = this.player.current.duration;
     dispatch({
       type: "SET_DURATION",
-      payload: duration
+      payload: duration,
     });
   }
   playPause() {
@@ -32,9 +32,13 @@ class Player extends Component {
       this.player.current.pause();
     }
   }
+  seekTo(pos) {
+    if (this.player.current !== undefined)
+      this.player.current.currentTime = pos;
+  }
   componentDidMount() {
     const { dispatch } = this.props;
-    getSongs().then(songs => {
+    getSongs().then((songs) => {
       dispatch({ type: "SET_SONGS", payload: songs });
     });
 
@@ -42,10 +46,10 @@ class Player extends Component {
       const { state, dispatch } = this.props;
       next(state, dispatch);
     });
-    this.player.current.addEventListener("timeupdate", e =>
+    this.player.current.addEventListener("timeupdate", (e) =>
       this.onTimeUpdate(e)
     );
-    this.player.current.addEventListener("durationchange", e =>
+    this.player.current.addEventListener("durationchange", (e) =>
       this.onDurationChange(e)
     );
   }
@@ -56,6 +60,11 @@ class Player extends Component {
     if (prevProps.state.currentSong !== this.props.state.currentSong) {
       this.playPause();
     }
+    if (
+      prevProps.state.positionScrubbedTo !== this.props.state.positionScrubbedTo
+    ) {
+      this.seekTo(this.props.state.positionScrubbedTo);
+    }
     if (prevProps.state.songs.length !== this.props.state.songs.length) {
       const { state, dispatch } = this.props;
       const { playing } = state.status;
@@ -65,7 +74,7 @@ class Player extends Component {
         if (!playing) {
           dispatch({
             type: "SET_STATUS",
-            payload: { ...state.status, playing: !playing }
+            payload: { ...state.status, playing: !playing },
           });
         }
       }

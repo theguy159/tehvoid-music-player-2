@@ -5,13 +5,13 @@ const defaultState = {
   queue: {
     unplayed: [],
     played: [],
-    pos: 0
+    pos: 0,
   },
   currentSong: {
     artist: "",
     title: "",
     album: "",
-    location: null
+    location: null,
   },
   playbackPosition: 0,
   duration: 0,
@@ -19,9 +19,10 @@ const defaultState = {
     playing: false,
     shuffle: true,
     repeat: false,
-    compact: false
+    compact: false,
   },
-  runningAnimation: false
+  runningAnimation: false,
+  positionScrubbedTo: 0,
 };
 
 function reducer(state = defaultState, action = {}) {
@@ -41,16 +42,16 @@ function reducer(state = defaultState, action = {}) {
         ...state,
         queue: {
           ...state.queue,
-          played: [...state.queue.played, action.payload]
-        }
+          played: [...state.queue.played, action.payload],
+        },
       };
     case "ADD_UNPLAYED_SONG":
       return {
         ...state,
         queue: {
           ...state.queue,
-          unplayed: [...state.queue.unplayed, action.payload]
-        }
+          unplayed: [...state.queue.unplayed, action.payload],
+        },
       };
     case "SET_PLAYED_SONGS":
       return { ...state, queue: { ...state.queue, played: action.payload } };
@@ -60,6 +61,8 @@ function reducer(state = defaultState, action = {}) {
       return { ...state, queue: { ...state.queue, pos: action.payload } };
     case "SET_RUNNING_ANIMATION":
       return { ...state, runningAnimation: action.payload };
+    case "SET_POSITION_SCRUBBED_TO":
+      return { ...state, positionScrubbedTo: action.payload };
     default:
       return state;
   }

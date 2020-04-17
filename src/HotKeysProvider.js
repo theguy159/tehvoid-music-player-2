@@ -28,7 +28,7 @@ class HotKeysProvider extends Component {
     PREV: this.handlePrev,
     PLAY_PAUSE: this.handlePlayPause,
     NEXT: this.handleNext,
-    SHUFFLE: this.handleToggleShuffle
+    SHUFFLE: this.handleToggleShuffle,
   };
   render() {
     return <GlobalHotKeys keyMap={keyMap} handlers={this.handlers} />;

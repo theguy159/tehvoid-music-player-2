@@ -6,9 +6,8 @@ import SongList from "./components/SongList";
 import Player from "./components/Player";
 import HotKeysProvider from "./HotKeysProvider";
 
-
-import 'rsuite/dist/styles/rsuite-default.css';
-import 'react-scrubber/lib/scrubber.css';
+import "rsuite/dist/styles/rsuite-default.css";
+import "react-scrubber/lib/scrubber.css";
 
 import "./App.css";
 import "./StatusBar.scss";
