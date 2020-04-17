@@ -10,14 +10,15 @@ function SongItem({
   albumArtSrc,
   length,
   className,
-  onClick
+  onClick,
+  compact
 }) {
   return (
     <div className={`SongItem ${className}`} onClick={onClick}>
-      <img src={albumArtSrc} alt="Album Art" className="albumArt" />
-      <div className="meta">
+      {!compact && <img src={albumArtSrc} alt="Album Art" className="albumArt" />}
+      <div className={`meta ${compact ? "compact" : ""}`}>
         {album.length > 0 && <div className="album">{album}</div>}
-        <div className="artist">{artist}</div>
+        <div className="artist">{`${compact ? artist + ' -' : artist}`}</div>
         <div className="title">{title}</div>
         <div className="length">{formatTimecode(length)}</div>
       </div>
@@ -31,7 +32,8 @@ SongItem.propTypes = {
   albumArtSrc: PropTypes.string,
   length: PropTypes.number,
   onClick: PropTypes.func.isRequired,
-  className: PropTypes.string
+  className: PropTypes.string,
+  compact: PropTypes.bool
 };
 SongItem.defaultProps = {
   album: "",
@@ -39,6 +41,7 @@ SongItem.defaultProps = {
   title: "Unknown title",
   albumArtSrc: "/img/aersiaIcon.png",
   className: "",
-  length: 0
+  length: 0,
+  compact: false
 };
 export default pure(SongItem);

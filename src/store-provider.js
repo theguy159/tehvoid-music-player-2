@@ -18,7 +18,8 @@ const defaultState = {
   status: {
     playing: false,
     shuffle: true,
-    repeat: false
+    repeat: false,
+    compact: false
   },
   runningAnimation: false
 };

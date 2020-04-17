@@ -31,7 +31,6 @@ export function scrollToCurrentSong(dispatch) {
     const element = document.querySelector(".song.playing");
     const verticalOffset = -document.querySelector(".StatusBar").offsetHeight;
     if (element !== null) {
-      dispatch({ type: "SET_RUNNING_ANIMATION", payload: true });
       animateScrollTo(element, {
         verticalOffset,
         minDuration: 1000,
@@ -40,9 +39,7 @@ export function scrollToCurrentSong(dispatch) {
             ? 4 * t * t * t
             : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
         }
-      }).then(() =>
-        dispatch({ type: "SET_RUNNING_ANIMATION", payload: false })
-      );
+      })
     }
   }, 200);
 }
@@ -122,5 +119,13 @@ export function toggleShuffle(state, dispatch) {
   dispatch({
     type: "SET_STATUS",
     payload: { ...state.status, shuffle: !shuffle }
+  });
+}
+
+export function toggleCompact(state, dispatch) {
+  const { compact } = state.status;
+  dispatch({
+    type: "SET_STATUS",
+    payload: { ...state.status, compact: !compact }
   });
 }

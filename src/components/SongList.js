@@ -21,6 +21,7 @@ function handleClick(dispatch, state, song) {
 function SongList(props) {
   const { state, dispatch } = useStore();
   const { songs, currentSong } = state;
+  const { compact } = state.status;
 
   // We don't want the page scrolling when pressing space
   useEffect(() => {
@@ -36,6 +37,7 @@ function SongList(props) {
     <div className="SongList">
       {songs.map((song, index) => (
         <SongItem
+          compact={compact}
           key={`song_${index}`}
           artist={song.artist}
           title={song.title}

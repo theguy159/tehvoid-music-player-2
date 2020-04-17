@@ -1,5 +1,6 @@
 .SongList {
   padding-top: 1.5rem;
+  margin-bottom: -1.5rem;
 }
 
 .song:hover {
@@ -8,6 +9,7 @@
   color: #fff;
 }
 .song.playing {
-  background: brown;
+  background: purple;
   color: #fff;
+  font-weight: 900;
 }
