@@ -1,7 +1,13 @@
 .settingsModal {
-  .toggles {
+  .settings {
     .rs-flex-box-grid {
       margin-bottom: 0.6rem;
+    }
+    .rs-picker-select {
+      width: 100%;
+    }
+    .rs-btn-toggle {
+      float: right;
     }
   }
 }

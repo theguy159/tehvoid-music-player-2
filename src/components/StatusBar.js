@@ -72,10 +72,6 @@ function StatusBar(props) {
         />
         <Icon icon="fast-forward" onClick={() => next(state, dispatch)} />
         <Icon icon="random" onClick={() => toggleShuffle(state, dispatch)} />
-        <Icon
-          icon={compact ? "expand" : "compress"}
-          onClick={() => toggleCompact(state, dispatch)}
-        />
         <Icon icon="cog" onClick={() => setShowSettingsModal(dispatch, true)} />
       </div>
       <div className="songMeta">

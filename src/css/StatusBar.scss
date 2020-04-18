@@ -1,13 +1,13 @@
 .StatusBar {
   position: fixed;
-  background: #666;
+  background: #555;
   width: 100%;
-  color: #fff;
+  color: #ddd;
   display: flex;
   align-items: baseline;
   width: 100%;
   .rs-icon {
-    margin: 0 .2rem;
+    margin: 0 0.2rem;
   }
   .songMeta {
     font-weight: 900;
@@ -17,13 +17,13 @@
     justify-content: space-between;
     align-items: baseline;
     .title {
-      margin-right: .4rem;
+      margin-right: 0.4rem;
     }
     .scrubber {
       flex: 1;
     }
     .position {
-      margin-left: .4rem;
+      margin-left: 0.4rem;
     }
     .title:hover {
       cursor: pointer;
@@ -31,7 +31,10 @@
   }
   .controlButtons {
     display: inline-block;
-    margin-right: .2rem;
+    margin-right: 0.2rem;
+    &:hover {
+      cursor: pointer;
+    }
   }
-  padding: .2rem;
+  padding: 0.2rem;
 }

@@ -1,0 +1,14 @@
+[
+  {
+    "label": "Purple Dark",
+    "value": "purpleDark"
+  },
+  {
+    "label": "Purple Light",
+    "value": "purpleLight"
+  },
+  {
+    "label": "Custom",
+    "value": "custom"
+  }
+]
