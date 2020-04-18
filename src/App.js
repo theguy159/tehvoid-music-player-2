@@ -7,7 +7,7 @@ import Player from "./components/Player";
 import HotKeysProvider from "./HotKeysProvider";
 import SettingsModal from "./components/SettingsModal";
 
-import "rsuite/dist/styles/rsuite-dark.css";
+import "./theme/index.less";
 import "react-scrubber/lib/scrubber.css";
 
 import "./css/App.scss";
