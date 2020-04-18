@@ -16,7 +16,7 @@ function SettingsModal(props) {
     <Modal
       backdrop
       show={showSettingsModal}
-      full
+      size="lg"
       onHide={() => closeModal(dispatch)}
     >
       <Modal.Header>
