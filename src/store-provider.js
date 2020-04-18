@@ -19,10 +19,12 @@ const defaultState = {
     playing: false,
     shuffle: true,
     repeat: false,
-    compact: false,
+    compact: true,
   },
   runningAnimation: false,
   positionScrubbedTo: 0,
+  bufferedPercent: 0,
+  showSettingsModal: false,
 };
 
 function reducer(state = defaultState, action = {}) {
@@ -63,6 +65,10 @@ function reducer(state = defaultState, action = {}) {
       return { ...state, runningAnimation: action.payload };
     case "SET_POSITION_SCRUBBED_TO":
       return { ...state, positionScrubbedTo: action.payload };
+    case "SET_BUFFERED_PERCENT":
+      return { ...state, bufferedPercent: action.payload };
+    case "SET_SHOW_SETTINGS_MODAL":
+      return { ...state, showSettingsModal: action.payload };
     default:
       return state;
   }

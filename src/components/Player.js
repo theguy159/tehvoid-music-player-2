@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import withStore from "../withStore";
-import { next } from "../utils";
+import { next, setBufferedPercent } from "../utils";
 import { getSongs } from "../adapters/vip";
 class Player extends Component {
   constructor(props) {
@@ -23,6 +23,28 @@ class Player extends Component {
       type: "SET_DURATION",
       payload: duration,
     });
+  }
+  onProgress() {
+    const { dispatch } = this.props;
+    const player = this.player.current;
+    const duration = player.duration;
+    // console.log("onProgress");
+    if (duration > 0) {
+      for (let i = 0; i < player.buffered.length; i++) {
+        const bufferedPercent =
+          (player.buffered.end(player.buffered.length - 1 - i) / duration) *
+          100;
+        if (
+          player.buffered.start(player.buffered.length - 1 - i) <
+          player.currentTime
+        ) {
+          // console.log("setting BP:", bufferedPercent);
+          setBufferedPercent(dispatch, bufferedPercent);
+        } else {
+          // console.log("Ignoring: ", bufferedPercent);
+        }
+      }
+    }
   }
   playPause() {
     const { playing } = this.props.state.status;
@@ -52,6 +74,7 @@ class Player extends Component {
     this.player.current.addEventListener("durationchange", (e) =>
       this.onDurationChange(e)
     );
+    this.player.current.addEventListener("progress", (e) => this.onProgress(e));
   }
   componentDidUpdate(prevProps) {
     if (prevProps.state.status.playing !== this.props.state.status.playing) {

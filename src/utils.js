@@ -75,6 +75,10 @@ export function next(state, dispatch) {
       payload: { ...state.status, playing: true },
     });
   }
+  dispatch({
+    type: "SET_BUFFERED_PERCENT",
+    payload: 0,
+  });
   scrollToCurrentSong(dispatch);
 }
 
@@ -104,6 +108,10 @@ export function prev(state, dispatch) {
       payload: { ...state.status, playing: true },
     });
   }
+  dispatch({
+    type: "SET_BUFFERED_PERCENT",
+    payload: 0,
+  });
   scrollToCurrentSong(dispatch);
 }
 
@@ -130,9 +138,23 @@ export function toggleCompact(state, dispatch) {
   });
 }
 
-export function setPositionScrubbedTo(state, dispatch, positionScrubbedTo) {
+export function setPositionScrubbedTo(dispatch, positionScrubbedTo) {
   dispatch({
     type: "SET_POSITION_SCRUBBED_TO",
     payload: positionScrubbedTo,
+  });
+}
+
+export function setBufferedPercent(dispatch, bufferedPercent) {
+  dispatch({
+    type: "SET_BUFFERED_PERCENT",
+    payload: bufferedPercent,
+  });
+}
+
+export function setShowSettingsModal(dispatch, showSettingsModal) {
+  dispatch({
+    type: "SET_SHOW_SETTINGS_MODAL",
+    payload: showSettingsModal,
   });
 }

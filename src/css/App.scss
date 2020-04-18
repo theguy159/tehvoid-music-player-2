@@ -1,0 +1,19 @@
+body {
+  background: #333;
+  color: #bbb;
+}
+
+.scrubber {
+  .bar {
+    background: #888;
+  }
+  .bar__progress {
+    background: purple;
+  }
+  .bar__thumb {
+    background: #ff00ff;
+  }
+  .bar__buffer {
+    background: rgba(255, 255, 255, 0.3);
+  }
+}

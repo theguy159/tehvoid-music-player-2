@@ -10,6 +10,7 @@ import {
   toggleCompact,
   scrollToCurrentSong,
   setPositionScrubbedTo,
+  setShowSettingsModal,
 } from "../utils";
 import { Scrubber } from "react-scrubber";
 
@@ -31,15 +32,9 @@ function handleScrubChange(scrubPosition, setScrubPosition) {
 }
 
 // Sorry for the long signature :|
-function handleScrubEnd(
-  scrubPosition,
-  duration,
-  setIsScrubbing,
-  state,
-  dispatch
-) {
+function handleScrubEnd(scrubPosition, duration, setIsScrubbing, dispatch) {
   const positionScrubbedTo = (scrubPosition * duration) / 100;
-  setPositionScrubbedTo(state, dispatch, positionScrubbedTo);
+  setPositionScrubbedTo(dispatch, positionScrubbedTo);
   setIsScrubbing(false);
 }
 
@@ -47,7 +42,7 @@ function StatusBar(props) {
   const { state, dispatch } = useStore();
   const { playing, shuffle, compact } = state.status;
   const { artist, title } = state.currentSong;
-  const { playbackPosition, duration } = state;
+  const { playbackPosition, duration, bufferedPercent } = state;
 
   const [scrubPosition, setScrubPosition] = useState(0);
   const [isScrubbing, setIsScrubbing] = useState(false);
@@ -81,6 +76,7 @@ function StatusBar(props) {
           icon={compact ? "expand" : "compress"}
           onClick={() => toggleCompact(state, dispatch)}
         />
+        <Icon icon="cog" onClick={() => setShowSettingsModal(dispatch, true)} />
       </div>
       <div className="songMeta">
         <div className="title" onClick={() => scrollToCurrentSong(dispatch)}>
@@ -90,12 +86,13 @@ function StatusBar(props) {
           min={0}
           max={100}
           value={playbackPercent}
+          bufferPosition={bufferedPercent}
           onScrubStart={(pos) =>
             handleScrubStart(pos, setIsScrubbing, setScrubPosition)
           }
           onScrubChange={(pos) => handleScrubChange(pos, setScrubPosition)}
           onScrubEnd={(pos) =>
-            handleScrubEnd(pos, duration, setIsScrubbing, state, dispatch)
+            handleScrubEnd(pos, duration, setIsScrubbing, dispatch)
           }
         />
         <div className="position">
