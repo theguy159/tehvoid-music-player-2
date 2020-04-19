@@ -7,7 +7,6 @@ import {
   prev,
   formatTimecode,
   toggleShuffle,
-  toggleCompact,
   scrollToCurrentSong,
   setPositionScrubbedTo,
   setShowSettingsModal,
@@ -40,9 +39,14 @@ function handleScrubEnd(scrubPosition, duration, setIsScrubbing, dispatch) {
 
 function StatusBar(props) {
   const { state, dispatch } = useStore();
-  const { playing, shuffle, compact } = state.status;
+  const { playing } = state.status;
   const { artist, title } = state.currentSong;
-  const { playbackPosition, duration, bufferedPercent } = state;
+  const {
+    playbackPosition,
+    duration,
+    bufferedPercent,
+    showSongTitleInStatusBar,
+  } = state;
 
   const [scrubPosition, setScrubPosition] = useState(0);
   const [isScrubbing, setIsScrubbing] = useState(false);
@@ -75,9 +79,11 @@ function StatusBar(props) {
         <Icon icon="cog" onClick={() => setShowSettingsModal(dispatch, true)} />
       </div>
       <div className="songMeta">
-        <div className="title" onClick={() => scrollToCurrentSong(dispatch)}>
-          {artist} - {title}
-        </div>
+        {showSongTitleInStatusBar && (
+          <div className="title" onClick={() => scrollToCurrentSong(dispatch)}>
+            {artist} - {title}
+          </div>
+        )}
         <Scrubber
           min={0}
           max={100}

@@ -44,7 +44,7 @@ export function scrollToCurrentSong(dispatch) {
   }, 200);
 }
 
-export function next(state, dispatch) {
+export function next(state, dispatch, atStartup = false) {
   const { songs, currentSong } = state;
   const { shuffle, playing } = state.status;
   const { pos: queuePos, played, unplayed } = state.queue;
@@ -69,7 +69,7 @@ export function next(state, dispatch) {
     const nextSong = songs[nextSongIndex];
     dispatch({ type: "SET_CURRENT_SONG", payload: nextSong });
   }
-  if (!playing) {
+  if (!playing && !atStartup) {
     dispatch({
       type: "SET_STATUS",
       payload: { ...state.status, playing: true },
@@ -156,5 +156,22 @@ export function setShowSettingsModal(dispatch, showSettingsModal) {
   dispatch({
     type: "SET_SHOW_SETTINGS_MODAL",
     payload: showSettingsModal,
+  });
+}
+
+export function setShowSongTitleInStatusBar(
+  dispatch,
+  showSongTitleInStatusBar
+) {
+  dispatch({
+    type: "SET_SHOW_SONG_TITLE_IN_STATUSBAR",
+    payload: showSongTitleInStatusBar,
+  });
+}
+
+export function setAutoplayAtStartup(dispatch, autoplayAtStartup) {
+  dispatch({
+    type: "SET_AUTOPLAY_AT_STARTUP",
+    payload: autoplayAtStartup,
   });
 }

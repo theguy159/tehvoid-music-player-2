@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useStore } from "../store-provider";
 import {
   Modal,
@@ -14,7 +14,12 @@ import {
   Radio,
 } from "rsuite";
 import themes from "../theme/themes.json";
-import { setShowSettingsModal } from "../utils";
+import {
+  setShowSettingsModal,
+  setShowSongTitleInStatusBar,
+  toggleCompact,
+  setAutoplayAtStartup,
+} from "../utils";
 import "../css/SettingsModal.scss";
 
 function closeModal(dispatch) {
@@ -23,9 +28,13 @@ function closeModal(dispatch) {
 
 function SettingsModal(props) {
   const { state, dispatch } = useStore();
-  const { showSettingsModal } = state;
-  const [autoplayChecked, setAutoplayChecked] = useState(false);
-  const [showTitleChecked, setShowTitleChecked] = useState(false);
+  const {
+    showSettingsModal,
+    showSongTitleInStatusBar,
+    autoplayAtStartup,
+  } = state;
+  const { compact } = state.status;
+
   const rightColspan = 7;
 
   return (
@@ -40,12 +49,13 @@ function SettingsModal(props) {
         <Modal.Title>Tehvoid Music Player Settings</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <h1>Hello there!</h1>
-        <p>
-          Here I will (obviously) add settings and toggles! <b>oh my!</b>
-        </p>
-        <p>PS: none of the settings listed below does anything yet</p>
-        <br />
+        <div className="settingsDisclaimer">
+          <h1>Hello there!</h1>
+          <p>
+            Here I will (obviously) add settings and toggles! <b>oh my!</b>
+          </p>
+          <p>PS: none of the settings listed below does anything yet</p>
+        </div>
         <div className="settings">
           <Divider>General</Divider>
           <FlexboxGrid justify="space-between">
@@ -54,8 +64,10 @@ function SettingsModal(props) {
             </FlexboxGrid.Item>
             <FlexboxGrid.Item colspan={rightColspan}>
               <Toggle
-                onChange={() => setAutoplayChecked(!autoplayChecked)}
-                checked={autoplayChecked}
+                onChange={() =>
+                  setAutoplayAtStartup(dispatch, !autoplayAtStartup)
+                }
+                checked={autoplayAtStartup}
               />
             </FlexboxGrid.Item>
           </FlexboxGrid>
@@ -66,8 +78,13 @@ function SettingsModal(props) {
             </FlexboxGrid.Item>
             <FlexboxGrid.Item colspan={rightColspan}>
               <Toggle
-                onChange={() => setShowTitleChecked(!showTitleChecked)}
-                checked={showTitleChecked}
+                onChange={() =>
+                  setShowSongTitleInStatusBar(
+                    dispatch,
+                    !showSongTitleInStatusBar
+                  )
+                }
+                checked={showSongTitleInStatusBar}
               />
             </FlexboxGrid.Item>
           </FlexboxGrid>
@@ -79,6 +96,7 @@ function SettingsModal(props) {
                 data={themes}
                 searchable={false}
                 cleanable={false}
+                defaultValue="purpleDark"
               />
             </FlexboxGrid.Item>
           </FlexboxGrid>
@@ -87,7 +105,12 @@ function SettingsModal(props) {
             <FlexboxGrid.Item colspan={12}>Item display mode:</FlexboxGrid.Item>
             <FlexboxGrid.Item colspan={rightColspan}>
               <FormGroup controlId="itemDisplayMode">
-                <RadioGroup name="itemDisplayMode" inline>
+                <RadioGroup
+                  name="itemDisplayMode"
+                  inline
+                  value={compact ? "compact" : "expanded"}
+                  onChange={() => toggleCompact(state, dispatch)}
+                >
                   <Radio value="compact">Compact</Radio>
                   <Radio value="expanded">Expanded</Radio>
                 </RadioGroup>

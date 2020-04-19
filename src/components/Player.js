@@ -91,10 +91,10 @@ class Player extends Component {
     if (prevProps.state.songs.length !== this.props.state.songs.length) {
       const { state, dispatch } = this.props;
       const { playing } = state.status;
+      const { autoplayAtStartup } = state;
       if (state.currentSong.location === null) {
-        next(state, dispatch);
-        // TODO: make autoplay a user choice
-        if (!playing) {
+        next(state, dispatch, true);
+        if (!playing && autoplayAtStartup) {
           dispatch({
             type: "SET_STATUS",
             payload: { ...state.status, playing: !playing },

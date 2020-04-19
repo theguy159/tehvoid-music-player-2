@@ -1,4 +1,14 @@
-import React, { createContext, useReducer, useContext } from "react";
+import React, { createContext, useReducer, useContext, useEffect } from "react";
+
+function fromLocalStorage(item, defaultValue = false) {
+  return window.localStorage.getItem(item) !== null
+    ? JSON.parse(window.localStorage.getItem(item))
+    : defaultValue;
+}
+
+function toLocalStorage(item, object) {
+  window.localStorage.setItem(item, JSON.stringify(object));
+}
 
 const defaultState = {
   songs: [],
@@ -19,12 +29,14 @@ const defaultState = {
     playing: false,
     shuffle: true,
     repeat: false,
-    compact: true,
+    compact: fromLocalStorage("compact", true),
   },
   runningAnimation: false,
   positionScrubbedTo: 0,
   bufferedPercent: 0,
   showSettingsModal: false,
+  showSongTitleInStatusBar: fromLocalStorage("showSongTitleInStatusBar", true),
+  autoplayAtStartup: fromLocalStorage("autoplayAtStartup", false),
 };
 
 function reducer(state = defaultState, action = {}) {
@@ -69,6 +81,10 @@ function reducer(state = defaultState, action = {}) {
       return { ...state, bufferedPercent: action.payload };
     case "SET_SHOW_SETTINGS_MODAL":
       return { ...state, showSettingsModal: action.payload };
+    case "SET_SHOW_SONG_TITLE_IN_STATUSBAR":
+      return { ...state, showSongTitleInStatusBar: action.payload };
+    case "SET_AUTOPLAY_AT_STARTUP":
+      return { ...state, autoplayAtStartup: action.payload };
     default:
       return state;
   }
@@ -79,6 +95,21 @@ const StoreContext = createContext(null);
 export function StoreProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, defaultState);
   const value = { state, dispatch };
+
+  const { autoplayAtStartup, showSongTitleInStatusBar } = state;
+  const { compact } = state.status;
+
+  // Sync certain state objects to localStorage
+  // TODO: make this cleaner
+  const useEffectHelper = (object, cb) => useEffect(() => cb(), [object, cb]);
+
+  useEffectHelper(autoplayAtStartup, () =>
+    toLocalStorage("autoplayAtStartup", autoplayAtStartup)
+  );
+  useEffectHelper(compact, () => toLocalStorage("compact", compact));
+  useEffectHelper(showSongTitleInStatusBar, () =>
+    toLocalStorage("showSongTitleInStatusBar", showSongTitleInStatusBar)
+  );
 
   return (
     <StoreContext.Provider value={value}>{children}</StoreContext.Provider>
