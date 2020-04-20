@@ -28,22 +28,11 @@ class Player extends Component {
     const { dispatch } = this.props;
     const player = this.player.current;
     const duration = player.duration;
-    // console.log("onProgress");
     if (duration > 0) {
-      for (let i = 0; i < player.buffered.length; i++) {
-        const bufferedPercent =
-          (player.buffered.end(player.buffered.length - 1 - i) / duration) *
-          100;
-        if (
-          player.buffered.start(player.buffered.length - 1 - i) <
-          player.currentTime
-        ) {
-          // console.log("setting BP:", bufferedPercent);
-          setBufferedPercent(dispatch, bufferedPercent);
-        } else {
-          // console.log("Ignoring: ", bufferedPercent);
-        }
-      }
+      // This works perfectly fine in Chrome... But not in Firefox :S
+      const buffered = player.buffered.end(player.buffered.length - 1);
+      const bufferedPercent = (buffered / duration) * 100;
+      setBufferedPercent(dispatch, bufferedPercent);
     }
   }
   playPause() {
