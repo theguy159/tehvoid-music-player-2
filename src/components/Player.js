@@ -111,7 +111,7 @@ class Player extends Component {
     if (location && location.includes('vipvgm') || location === null)
       return <audio ref={this.player} src={location}></audio>
     else
-      return <div class='hidden'><ReactPlayer url={location} playing={playing} onProgress={(e) => this.onProgress(e)} onDuration={(duration) => this.onDurationChange(duration)} onEnded={() => this.onEnded()} /></div>
+      return <div className='hidden'><ReactPlayer url={location} playing={playing} onProgress={(e) => this.onProgress(e)} onDuration={(duration) => this.onDurationChange(duration)} onEnded={() => this.onEnded()} /></div>
   }
 }
 
