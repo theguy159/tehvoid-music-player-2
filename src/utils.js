@@ -1,4 +1,6 @@
 import animateScrollTo from "animated-scroll-to";
+import React from 'react'
+import { Icon } from 'rsuite'
 
 export function formatTimecode(seconds) {
   seconds = Math.floor(seconds);
@@ -174,4 +176,12 @@ export function setAutoplayAtStartup(dispatch, autoplayAtStartup) {
     type: "SET_AUTOPLAY_AT_STARTUP",
     payload: autoplayAtStartup,
   });
+}
+
+export function getSourceIcon(location) {
+  if (location.includes('youtube'))
+    return <Icon fixedWidth icon='youtube' />
+  if (location.includes('soundcloud'))
+    return <Icon fixedWidth icon='soundcloud' />
+  return null
 }

@@ -1,12 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { formatTimecode } from "../utils";
+import { formatTimecode, getSourceIcon } from "../utils";
 import { pure } from "recompose";
 
 function SongItem({
   artist,
   title,
   album,
+  location,
   albumArtSrc,
   length,
   className,
@@ -14,11 +15,12 @@ function SongItem({
   compact,
 }) {
   return (
-    <div className={`SongItem ${className}`} onClick={onClick}>
+    <div className={`SongItem ${className} ${compact ? "compact" : ""}`} onClick={onClick}>
       {!compact && (
-        <img src={albumArtSrc} alt="Album Art" className="albumArt" />
+        <div className='albumArtContainer'><img src={albumArtSrc || (location.includes('vipvgm') ? "img/aersiaIcon.png" : "/img/yt_icon_rgb.png")} alt="Album Art" className="albumArt" /></div>
       )}
       <div className={`meta ${compact ? "compact" : ""}`}>
+        {compact && getSourceIcon(location)}
         {album.length > 0 && <div className="album">{album}</div>}
         <div className="artist">{`${compact ? artist + " -" : artist}`}</div>
         <div className="title">{title}</div>

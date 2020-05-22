@@ -1,6 +1,14 @@
 .SongItem {
   display: flex;
-  padding: 0.2rem;
+  padding: 0;
+  height: 6rem;
+  margin: 0.4rem;
+  flex-direction: row;
+  align-items: center;
+  &.compact {
+    height: auto;
+    margin: 0 0.4rem;
+  }
   .meta {
     flex: 1;
     &.compact div {
@@ -13,8 +21,16 @@
       float: right;
     }
   }
-  .albumArt {
-    width: auto;
+  .albumArtContainer {
     height: 100%;
+    width: 6rem;
+    margin-right: .6rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .albumArt {
+      max-width: 6rem;
+      height: auto;
+    }
   }
 }

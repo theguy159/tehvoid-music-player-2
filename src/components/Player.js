@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import withStore from "../withStore";
 import { next, setBufferedPercent } from "../utils";
-import { getSongs } from "../adapters/vip";
+import { getSongs } from "../adapters/testAdapter";
+import ReactPlayer from "react-player";
 class Player extends Component {
   constructor(props) {
     super(props);
@@ -16,31 +17,45 @@ class Player extends Component {
         payload: this.player.current.currentTime,
       });
   }
-  onDurationChange() {
+  onDurationChange(duration) {
     const { dispatch } = this.props;
-    const duration = this.player.current.duration;
     dispatch({
       type: "SET_DURATION",
-      payload: duration,
+      payload: typeof duration === 'number' ? duration : this.player.current.duration,
     });
   }
-  onProgress() {
+  onProgress(e) {
     const { dispatch } = this.props;
-    const player = this.player.current;
-    const duration = player.duration;
-    if (duration > 0) {
-      // This works perfectly fine in Chrome... But not in Firefox :S
-      const buffered = player.buffered.end(player.buffered.length - 1);
-      const bufferedPercent = (buffered / duration) * 100;
-      setBufferedPercent(dispatch, bufferedPercent);
+    if (this.player && this.player.current) {
+      const player = this.player.current;
+      const duration = player.duration;
+      if (duration > 0) {
+        // This works perfectly fine in Chrome... But not in Firefox :S
+        const buffered = player.buffered.end(player.buffered.length - 1);
+        const bufferedPercent = (buffered / duration) * 100;
+        setBufferedPercent(dispatch, bufferedPercent);
+      }
+    } else {
+      setBufferedPercent(dispatch, e.loaded * 100)
+      dispatch({
+        type: "SET_PLAYBACK_POSITION",
+        payload: e.playedSeconds
+      })
     }
+
+  }
+  onEnded() {
+    const { state, dispatch } = this.props;
+    next(state, dispatch);
   }
   playPause() {
     const { playing } = this.props.state.status;
-    if (playing) {
-      this.player.current.play();
-    } else {
-      this.player.current.pause();
+    if (this.player && this.player.current) {
+      if (playing) {
+        this.player.current.play();
+      } else {
+        this.player.current.pause();
+      }
     }
   }
   seekTo(pos) {
@@ -53,10 +68,7 @@ class Player extends Component {
       dispatch({ type: "SET_SONGS", payload: songs });
     });
 
-    this.player.current.addEventListener("ended", () => {
-      const { state, dispatch } = this.props;
-      next(state, dispatch);
-    });
+    this.player.current.addEventListener("ended", () => this.onEnded());
     this.player.current.addEventListener("timeupdate", (e) =>
       this.onTimeUpdate(e)
     );
@@ -95,7 +107,11 @@ class Player extends Component {
 
   render() {
     const { location } = this.props.state.currentSong;
-    return <audio ref={this.player} src={location}></audio>;
+    const { playing } = this.props.state.status;
+    if (location && location.includes('vipvgm') || location === null)
+      return <audio ref={this.player} src={location}></audio>
+    else
+      return <div class='hidden'><ReactPlayer url={location} playing={playing} onProgress={(e) => this.onProgress(e)} onDuration={(duration) => this.onDurationChange(duration)} onEnded={() => this.onEnded()} /></div>
   }
 }
 

@@ -41,6 +41,8 @@ function SongList(props) {
           key={`song_${index}`}
           artist={song.artist}
           title={song.title}
+          location={song.location}
+          albumArtSrc={song.albumArtSrc ? song.albumArtSrc : null}
           onClick={() => handleClick(dispatch, state, song)}
           className={`song ${
             currentSong.trackIndex === song.trackIndex ? "playing" : ""
