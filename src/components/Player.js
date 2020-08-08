@@ -7,6 +7,7 @@ class Player extends Component {
   constructor(props) {
     super(props);
     this.player = React.createRef();
+    this.rplayer = React.createRef();
   }
   onTimeUpdate() {
     const { state, dispatch } = this.props;
@@ -21,7 +22,8 @@ class Player extends Component {
     const { dispatch } = this.props;
     dispatch({
       type: "SET_DURATION",
-      payload: typeof duration === 'number' ? duration : this.player.current.duration,
+      payload:
+        typeof duration === "number" ? duration : this.player.current.duration,
     });
   }
   onProgress(e) {
@@ -36,13 +38,12 @@ class Player extends Component {
         setBufferedPercent(dispatch, bufferedPercent);
       }
     } else {
-      setBufferedPercent(dispatch, e.loaded * 100)
+      setBufferedPercent(dispatch, e.loaded * 100);
       dispatch({
         type: "SET_PLAYBACK_POSITION",
-        payload: e.playedSeconds
-      })
+        payload: e.playedSeconds,
+      });
     }
-
   }
   onEnded() {
     const { state, dispatch } = this.props;
@@ -59,8 +60,10 @@ class Player extends Component {
     }
   }
   seekTo(pos) {
-    if (this.player.current !== undefined)
+    if (this.player.current !== null && this.player.current !== undefined)
       this.player.current.currentTime = pos;
+    if (this.rplayer.current !== null && this.rplayer.current !== undefined)
+      this.rplayer.current.seekTo(pos);
   }
   componentDidMount() {
     const { dispatch } = this.props;
@@ -108,10 +111,21 @@ class Player extends Component {
   render() {
     const { location } = this.props.state.currentSong;
     const { playing } = this.props.state.status;
-    if (location && location.includes('vipvgm') || location === null)
-      return <audio ref={this.player} src={location}></audio>
+    if ((location && location.includes("vipvgm")) || location === null)
+      return <audio ref={this.player} src={location}></audio>;
     else
-      return <div className='hidden'><ReactPlayer url={location} playing={playing} onProgress={(e) => this.onProgress(e)} onDuration={(duration) => this.onDurationChange(duration)} onEnded={() => this.onEnded()} /></div>
+      return (
+        <div className="hidden">
+          <ReactPlayer
+            ref={this.rplayer}
+            url={location}
+            playing={playing}
+            onProgress={(e) => this.onProgress(e)}
+            onDuration={(duration) => this.onDurationChange(duration)}
+            onEnded={() => this.onEnded()}
+          />
+        </div>
+      );
   }
 }
 

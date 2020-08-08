@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Icon } from "rsuite";
+import { Icon, SelectPicker } from "rsuite";
 
 import { useStore } from "../store-provider";
 import {
@@ -76,7 +76,6 @@ function StatusBar(props) {
         />
         <Icon icon="fast-forward" onClick={() => next(state, dispatch)} />
         <Icon icon="random" onClick={() => toggleShuffle(state, dispatch)} />
-        <Icon icon="cog" onClick={() => setShowSettingsModal(dispatch, true)} />
       </div>
       <div className="songMeta">
         {showSongTitleInStatusBar && (
@@ -100,6 +99,35 @@ function StatusBar(props) {
         <div className="position">
           {humanReadablePlaybackPosition} / {humanReadableDuration}
         </div>
+        <div className="playlistSelector">
+          <Icon icon="list-ul" />
+          <SelectPicker
+            data={[
+              { label: "main", value: "main", type: "upstream" },
+              { label: "favorites", value: "favorites", type: "local" },
+              { label: "spap", value: "spap", type: "local" },
+            ]}
+            groupBy="type"
+            value="main"
+            appearance="subtle"
+            cleanable={false}
+            style={{ width: 224 }}
+            renderMenuItem={(label, item) => (
+              <div className="playlistMenuItem">
+                {label}{" "}
+                {item.value !== "favorites" && item.type !== "upstream" && (
+                  <Icon icon="trash" />
+                )}
+              </div>
+            )}
+            renderExtraFooter={() => (
+              <div className="playlistActions">
+                <Icon icon="plus" />
+              </div>
+            )}
+          />
+        </div>
+        <Icon icon="cog" onClick={() => setShowSettingsModal(dispatch, true)} />
       </div>
     </div>
   );

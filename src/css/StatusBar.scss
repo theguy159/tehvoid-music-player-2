@@ -31,10 +31,30 @@
   }
   .controlButtons {
     display: inline-block;
-    margin-right: 0.2rem;
+    margin: 0 0.6rem;
     &:hover {
       cursor: pointer;
     }
   }
+  .playlistSelector {
+    .rs-picker-toggle-value {
+      color: #fff;
+      text-align: right;
+    }
+    margin: 0 0.6rem;
+  }
   padding: 0.2rem;
+}
+
+.playlistMenuItem {
+  .rs-icon {
+    float: right;
+  }
+}
+.playlistActions {
+  margin-bottom: 0.6rem;
+  text-align: right;
+  .rs-icon {
+    margin-right: 0.6rem;
+  }
 }
