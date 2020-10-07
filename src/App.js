@@ -1,5 +1,8 @@
 import React from "react";
 import { StoreProvider } from "./store-provider";
+import { initDB } from "react-indexed-db";
+
+import { DBConfig } from "./DBConfig";
 
 import StatusBar from "./components/StatusBar";
 import SongList from "./components/SongList";
@@ -14,6 +17,8 @@ import "./css/App.scss";
 import "./css/StatusBar.scss";
 import "./css/SongList.css";
 import "./css/SongItem.scss";
+
+initDB(DBConfig);
 
 function App() {
   return (

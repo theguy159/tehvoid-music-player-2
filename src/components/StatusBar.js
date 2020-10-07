@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Icon, SelectPicker } from "rsuite";
 
 import { useStore } from "../store-provider";
+import { useIndexedDB } from "react-indexed-db";
+
 import {
   next,
   prev,
@@ -39,6 +41,7 @@ function handleScrubEnd(scrubPosition, duration, setIsScrubbing, dispatch) {
 
 function StatusBar(props) {
   const { state, dispatch } = useStore();
+  const { getAll, add, deleteRecord } = useIndexedDB("playlists");
   const { playing } = state.status;
   const { artist, title } = state.currentSong;
   const {
@@ -50,6 +53,7 @@ function StatusBar(props) {
 
   const [scrubPosition, setScrubPosition] = useState(0);
   const [isScrubbing, setIsScrubbing] = useState(false);
+  const [playlists, setPlaylists] = useState([]);
 
   const humanReadablePlaybackPosition = isScrubbing
     ? formatTimecode((scrubPosition * duration) / 100)
@@ -60,11 +64,24 @@ function StatusBar(props) {
     ? scrubPosition
     : (playbackPosition / duration) * 100 || 0;
 
+  const handleAddPlaylist = (playlist) => {
+    add(playlist);
+  };
+
+  const handleDeletePlaylist = (id) => {
+    deleteRecord(id);
+  };
+
   useEffect(() => {
     document.title = `${
       playing ? `${artist} - ${title}` : "Tehvoid Music Player"
     }`;
   });
+  useEffect(() => {
+    getAll().then((playlistsFromDB) => {
+      setPlaylists(playlistsFromDB);
+    });
+  }, [getAll]);
 
   return (
     <div className="StatusBar">
@@ -105,24 +122,44 @@ function StatusBar(props) {
             data={[
               { label: "main", value: "main", type: "upstream" },
               { label: "favorites", value: "favorites", type: "local" },
-              { label: "spap", value: "spap", type: "local" },
+              ...playlists
+                .map((playlist) => ({
+                  label: playlist.title,
+                  value: playlist.id,
+                  type: "local",
+                  index: playlist.index,
+                }))
+                .sort((a, b) => a.index - b.index),
             ]}
             groupBy="type"
             value="main"
             appearance="subtle"
             cleanable={false}
             style={{ width: 224 }}
+            maxHeight={900}
             renderMenuItem={(label, item) => (
               <div className="playlistMenuItem">
                 {label}{" "}
                 {item.value !== "favorites" && item.type !== "upstream" && (
-                  <Icon icon="trash" />
+                  <Icon
+                    icon="trash"
+                    onClick={() => handleDeletePlaylist(item.value)}
+                  />
                 )}
               </div>
             )}
             renderExtraFooter={() => (
               <div className="playlistActions">
-                <Icon icon="plus" />
+                <Icon
+                  icon="plus"
+                  onClick={() =>
+                    handleAddPlaylist({
+                      title: `SPAPLIST`,
+                      index: playlists.length,
+                      songs: [1337, 7, 8, 9],
+                    })
+                  }
+                />
               </div>
             )}
           />
