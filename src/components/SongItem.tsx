@@ -1,8 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { formatTimecode, getSourceIcon } from "../utils";
 import { pure } from "recompose";
-import { Song } from "@interfaces/Song/SongDefinitions";
+import { Song } from "../interfaces/Song/SongDefinitions";
 
 interface SongItemProps {
   song: Song;
@@ -12,7 +11,14 @@ interface SongItemProps {
 }
 
 function SongItem({ song, className, onClick, compact }: SongItemProps) {
-  const { albumArtSrc, location, album, title, length } = song;
+  const {
+    albumArtSrc,
+    location,
+    artist = "",
+    title = "Unknown title",
+    album = "",
+    length = 0,
+  } = song;
   return (
     <div
       className={`SongItem ${className} ${compact ? "compact" : ""}`}

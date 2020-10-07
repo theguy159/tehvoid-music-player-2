@@ -39,10 +39,7 @@ function SongList(props) {
         <SongItem
           compact={compact}
           key={`song_${index}`}
-          artist={song.artist}
-          title={song.title}
-          location={song.location}
-          albumArtSrc={song.albumArtSrc ? song.albumArtSrc : null}
+          song={song}
           onClick={() => handleClick(dispatch, state, song)}
           className={`song ${
             currentSong.trackIndex === song.trackIndex ? "playing" : ""
